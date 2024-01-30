@@ -1,1 +1,0 @@
-All documentation related files including artwork (images, tables, etc.) shall go here.
