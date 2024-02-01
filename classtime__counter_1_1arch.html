@@ -82,7 +82,7 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Architecture definition of the time counter &lt;.  
+<p>Architecture definition of the time counter.  
  <a href="#details">More...</a></p>
 <b>Architecture &gt;&gt; </b><a class="el" href="classtime__counter_1_1arch.html">time_counter::arch</a><br />
 <table class="memberdecls">
@@ -99,8 +99,8 @@ Signals</h2></td></tr>
 <tr class="memitem:aef57e532d3514f83d684b87e29dbc510" id="r_aef57e532d3514f83d684b87e29dbc510"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#aef57e532d3514f83d684b87e29dbc510">nano_time_next</a> &#160;</td><td class="memItemRight" valign="bottom"><b><span class="keywordtype">unsigned</span><span class="vhdlchar"> </span><span class="vhdlchar">(</span><span class="vhdlchar"> </span><span class="vhdlchar"> </span> <span class="vhdldigit">31</span> <span class="vhdlchar"> </span><span class="keywordflow">downto</span><span class="vhdlchar"> </span><span class="vhdlchar"> </span> <span class="vhdldigit">0</span> <span class="vhdlchar"> </span><span class="vhdlchar">)</span><span class="vhdlchar"> </span></b></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Architecture definition of the time counter &lt;. </p>
-<p>Architecture implemented using methodology of regular &lt; structured sequential circuits with two registers for unix time &lt; and nanoseconds time. Unix time counter increments when nanoseconds &lt; coutner counts to 10^9 (1 second). Nanoseconds counter then resets. &lt; Asserting rst_i signal resets all counters to zeros. Asserting set_i &lt; signal sets value of unix time register to the time_i input value. </p>
+<div class="textblock"><p>Architecture definition of the time counter. </p>
+<p>Architecture implemented using methodology of regular structured sequential circuits with two registers for unix time and nanoseconds time. Unix time counter increments when nanoseconds coutner counts to 10^9 (1 second). Nanoseconds counter then resets. Asserting rst_i signal resets all counters to zeros. Asserting set_i signal sets value of unix time register to the time_i input value. </p>
 </div><h2 class="groupheader">Member Function/Procedure/Process Documentation</h2>
 <a id="a55c464125efe8ac1fd4e97b505a9bb78" name="a55c464125efe8ac1fd4e97b505a9bb78"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#a55c464125efe8ac1fd4e97b505a9bb78">&#9670;&#160;</a></span>PROCESS_0()</h2>
