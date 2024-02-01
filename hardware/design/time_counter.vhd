@@ -1,6 +1,6 @@
 -----------------------------------------------------------------------------
 -- Faculty of Electrical Engineering
--- PDS 2023
+-- PDS 2024
 -- https://github.com/etf-unibl/fpga-pwg
 -----------------------------------------------------------------------------
 --
@@ -49,7 +49,7 @@ use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
 --! @brief Time counter entity description
---! Entity is responsible for counting time with 20 ns resolution.
+--! @details Entity is responsible for counting time with 20 ns resolution.
 --! It takes a clock signal, a reset signal, a set signal and the preset time in unix time format.
 --! It outputs 64-bit vector which shows the passed time in unix format plus the nanoseconds.
 
@@ -57,13 +57,13 @@ use ieee.numeric_std.all;
 --! The entity has the following ports:
 --! `clk_i` is the clock input, used to synchronize the circuit.
 --! `rst_i` is the reset input, which resets the time signals when asserted.
---!< `set_i` is a signal that initializes higher 32 bits of time output to
---!< the current unix time specified by user, when asserted.
---!< `time_i` is the input signal which holds the value of the current
---!< unix time that is initializing time output when set_i is asserted.
---!< `time_o` is the 64-bit output signal representing the passed time.
---!< Higher 32 bits represent passed time in unix time format and the
---!< lower 32 bits represent higher precision improvement in nanoseconds.
+--! `set_i` is a signal that initializes higher 32 bits of time output to
+--! the current unix time specified by user, when asserted.
+--! `time_i` is the input signal which holds the value of the current
+--! unix time that is initializing time output when set_i is asserted.
+--! `time_o` is the 64-bit output signal representing the passed time.
+--! Higher 32 bits represent passed time in unix time format and the
+--! lower 32 bits represent higher precision improvement in nanoseconds.
 
 entity time_counter is
   port(
@@ -76,12 +76,12 @@ entity time_counter is
 end time_counter;
 
 --! @brief Architecture definition of the time counter
---!< @details Architecture implemented using methodology of regular
---!< structured sequential circuits with two registers for unix time
---!< and nanoseconds time. Unix time counter increments when nanoseconds
---!< coutner counts to 10^9 (1 second). Nanoseconds counter then resets.
---!< Asserting rst_i signal resets all counters to zeros. Asserting set_i
---!< signal sets value of unix time register to the time_i input value.
+--! @details Architecture implemented using methodology of regular
+--! structured sequential circuits with two registers for unix time
+--! and nanoseconds time. Unix time counter increments when nanoseconds
+--! coutner counts to 10^9 (1 second). Nanoseconds counter then resets.
+--! Asserting rst_i signal resets all counters to zeros. Asserting set_i
+--! signal sets value of unix time register to the time_i input value.
 --
 architecture arch of time_counter is
   signal unix_time_reg  : unsigned(31 downto 0);
