@@ -82,7 +82,7 @@ end time_counter;
 --! coutner counts to 10^9 (1 second). Nanoseconds counter then resets.
 --! Asserting rst_i signal resets all counters to zeros. Asserting set_i
 --! signal sets value of unix time register to the time_i input value.
---
+
 architecture arch of time_counter is
   signal unix_time_reg  : unsigned(31 downto 0);
   signal nano_time_reg  : unsigned(31 downto 0);
