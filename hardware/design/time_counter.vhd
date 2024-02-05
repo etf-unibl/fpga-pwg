@@ -48,20 +48,20 @@ use ieee.std_logic_1164.all;
 --! Use numeric types and conversion functions
 use ieee.numeric_std.all;
 
---! @brief Time counter entity description
+--! @brief Time counter desing counting time in unix format + nanoseconds
 --! @details Entity is responsible for counting time with 20 ns resolution.
---! It takes a clock signal, a reset signal, a set signal and the preset time in unix time format.
---! It outputs 64-bit vector which shows the passed time in unix format plus the nanoseconds.
-
---! @structure
---! The entity has the following ports:
---! `clk_i` is the clock input, used to synchronize the circuit.
---! `rst_i` is the reset input, which resets the time signals when asserted.
+--! Desing outputs 64-bit vector represeting the time in unix format with
+--! higher 32 bits, and nanosecond time in lower 32 bits. Desing offers
+--! synchronous set mode which sets unix time to the value specified in
+--! time_i register. Desing also offers asynchronous reset which clears
+--! all bits from output register. The entity has the following ports:
+--! `clk_i` is the clock input, used to synchronize the circuit,
+--! `rst_i` is the reset input, which resets the time signals when asserted,
 --! `set_i` is a signal that initializes higher 32 bits of time output to
---! the current unix time specified by user, when asserted.
+--! the current unix time specified by user, when asserted,
 --! `time_i` is the input signal which holds the value of the current
---! unix time that is initializing time output when set_i is asserted.
---! `time_o` is the 64-bit output signal representing the passed time.
+--! unix time that is initializing time output when set_i is asserted,
+--! `time_o` is the 64-bit output signal representing the passed time
 --! Higher 32 bits represent passed time in unix time format and the
 --! lower 32 bits represent higher precision improvement in nanoseconds.
 
