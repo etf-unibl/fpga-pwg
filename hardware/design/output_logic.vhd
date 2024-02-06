@@ -121,5 +121,5 @@ begin
   q_next <= val_decoded when q_cmp = '1' else q_reg;
 
   -- output logic
-  system_o <= q_reg;
+  system_o <= q_next;
 end arch;
