@@ -50,8 +50,8 @@ use ieee.numeric_std.all;
 --! @brief Output logic entity description
 --! @details Entity is responsible for implementig the output logic circuit.
 --! It compares the input counter time with the user specified time and sets
---! the system output accordingly. The output is a single bit that changes when
---! a match occurs between the counter time and the user time.
+--! the system output accordingly. The output is a single bit indicating the
+--! match between the counter time and user time.
 
 --! @structure
 --! The entity has the following ports:
@@ -60,7 +60,7 @@ use ieee.numeric_std.all;
 --! `value_i` is the input signal representing a value to be decoded.
 --! `counter_time_i` is the input signal representing the counter time.
 --! `user_time_i` is the input signal representing the user-specified time.
---! `system_o` is the output signal that the user specifies in the value register.
+--! `system_o` is the output signal indicating the match between counter and user time.
 
 entity output_logic is
   port(
@@ -121,5 +121,5 @@ begin
   q_next <= val_decoded when q_cmp = '1' else q_reg;
 
   -- output logic
-  system_o <= q_reg;
+  system_o <= q_next;
 end arch;
