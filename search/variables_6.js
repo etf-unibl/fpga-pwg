@@ -1,5 +1,5 @@
 var searchData=
 [
-  ['unix_5ftime_5fnext_0',['unix_time_next',['../classtime__counter_1_1arch.html#afd6d8db01d9be2ab2759e0823ee53704',1,'time_counter::arch']]],
-  ['unix_5ftime_5freg_1',['unix_time_reg',['../classtime__counter_1_1arch.html#a3f07d36a729b95555dd437ffe2233193',1,'time_counter::arch']]]
+  ['time_5fi_0',['time_i',['../classtime__counter.html#a221739a51ae6e49718592bb1439ff3a3',1,'time_counter']]],
+  ['time_5fo_1',['time_o',['../classtime__counter.html#ab97d32aa6496fbc72ebad891f3a27f5e',1,'time_counter']]]
 ];
