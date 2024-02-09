@@ -1,4 +1,5 @@
 var searchData=
 [
-  ['rst_5fi_0',['rst_i',['../classoutput__logic.html#ab86c7a8eec3a8327e506892977f85708',1,'output_logic.rst_i'],['../classtime__counter.html#ab86c7a8eec3a8327e506892977f85708',1,'time_counter.rst_i']]]
+  ['output_5flogic_0',['output_logic',['../classoutput__logic.html',1,'']]],
+  ['output_5flogic_2evhd_1',['output_logic.vhd',['../output__logic_8vhd.html',1,'']]]
 ];

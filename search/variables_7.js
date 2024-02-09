@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['unix_5ftime_5fnext_0',['unix_time_next',['../classtime__counter_1_1arch.html#afd6d8db01d9be2ab2759e0823ee53704',1,'time_counter::arch']]],
-  ['unix_5ftime_5freg_1',['unix_time_reg',['../classtime__counter_1_1arch.html#a3f07d36a729b95555dd437ffe2233193',1,'time_counter::arch']]],
-  ['user_5ftime_5fi_2',['user_time_i',['../classoutput__logic.html#acaccab3f2e7187a8e356d2fa32aebd0b',1,'output_logic']]]
+  ['read_5fdata_5fo_0',['read_data_o',['../classfifo__buffer.html#a1007d9523a61a80823d3b5d5bfd772d9',1,'fifo_buffer']]],
+  ['read_5fen_5fi_1',['read_en_i',['../classfifo__buffer.html#afe73a1e3661446ca26c8a30efe000a83',1,'fifo_buffer']]],
+  ['rst_5fi_2',['rst_i',['../classfifo__buffer.html#ab86c7a8eec3a8327e506892977f85708',1,'fifo_buffer.rst_i'],['../classoutput__logic.html#ab86c7a8eec3a8327e506892977f85708',1,'output_logic.rst_i'],['../classtime__counter.html#ab86c7a8eec3a8327e506892977f85708',1,'time_counter.rst_i']]]
 ];

@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['time_5fcounter_0',['time_counter',['../classtime__counter.html',1,'']]]
+  ['output_5flogic_0',['output_logic',['../classoutput__logic.html',1,'']]]
 ];

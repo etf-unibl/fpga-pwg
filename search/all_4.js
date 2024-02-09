@@ -1,5 +1,4 @@
 var searchData=
 [
-  ['output_5flogic_0',['output_logic',['../classoutput__logic.html',1,'']]],
-  ['output_5flogic_2evhd_1',['output_logic.vhd',['../output__logic_8vhd.html',1,'']]]
+  ['g_5fdepth_0',['g_DEPTH',['../classfifo__buffer.html#a096f7e962f882244e730a714fb018565',1,'fifo_buffer']]]
 ];
