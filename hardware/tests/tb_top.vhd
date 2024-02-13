@@ -2,7 +2,13 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+library vunit_lib;
+context vunit_lib.vunit_context;
+
+library design_lib;
+
 entity tb_top is
+  generic (runner_cfg : string);
 end tb_top;
 
 architecture testbench of tb_top is
@@ -16,32 +22,9 @@ architecture testbench of tb_top is
   type value_array_t is array(0 to 4) of std_logic_vector(31 downto 0);
   signal value_array : value_array_t;
   signal dummy : std_logic := '0';
-
-  constant CLOCK_PERIOD : time := 20 ns; 
-
-  component time_counter
-    port(
-      clk_i      : in  std_logic;
-      rst_i      : in  std_logic;
-      set_i      : in  std_logic;
-      time_i     : in  std_logic_vector(31 downto 0);
-      time_o     : out std_logic_vector(63 downto 0)
-    );
-  end component;
-
-  component output_logic
-    port(
-      clk_i          : in std_logic;
-      rst_i          : in std_logic;
-      value_i        : in std_logic_vector(31 downto 0);
-      counter_time_i : in std_logic_vector(63 downto 0);
-      user_time_i    : in std_logic_vector(63 downto 0);
-      system_o       : out std_logic
-    );
-  end component;
-
+  constant CLOCK_PERIOD : time := 20 ns;
 begin
-  uut_counter : time_counter
+  uut_counter : entity design_lib.time_counter
     port map(
       clk_i  => clk_tb,
       rst_i  => rst_tb,
@@ -50,7 +33,7 @@ begin
       time_o => counter_time_o_tb
     );
 
-  uut_output : output_logic
+  uut_output : entity design_lib.output_logic
     port map(
       clk_i          => clk_tb,
       rst_i          => rst_tb,
@@ -88,7 +71,7 @@ begin
     value_array(3) <=  (others => '1');
     timestamp_array(4) <=  std_logic_vector(to_unsigned(1707211273,time_i_tb'length)) & std_logic_vector(to_unsigned(1560,time_i_tb'length));
     value_array(4) <=  (others => '0');
-    wait;
+	wait;
   end process;
 
   set_gen: process
@@ -103,12 +86,17 @@ begin
   stim_gen: process
     variable i: integer := 0;
   begin
-    wait for 5 ns;
-    user_time_i_tb <= timestamp_array(i);
-    value_i_tb <= value_array(i);
-    i := i+1;
-    wait on dummy;
-
+    test_runner_setup(runner, runner_cfg);
+    if (i /= 4) then
+        wait for 5 ns;
+        user_time_i_tb <= timestamp_array(i);
+        value_i_tb <= value_array(i);
+        i := i+1;
+        wait on dummy;
+    else
+        test_runner_cleanup(runner);
+        wait;
+    end if;
   end process;
 
   monitor_gen: process
@@ -130,7 +118,7 @@ begin
         end if;
       end if;
       dummy <= not dummy;
-	 end if;
+	end if;
   end process;
 
 end testbench;

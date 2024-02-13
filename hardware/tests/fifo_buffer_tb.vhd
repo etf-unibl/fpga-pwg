@@ -2,7 +2,13 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
+library vunit_lib;
+context vunit_lib.vunit_context;
+
+library design_lib;
+
 entity fifo_buffer_tb is
+    generic (runner_cfg : string);
 end fifo_buffer_tb;
 
 architecture arch of fifo_buffer_tb is
@@ -29,24 +35,8 @@ architecture arch of fifo_buffer_tb is
         to_unsigned(12500, read_data'length),
         to_unsigned(25000, read_data'length)
     );
-
-    component fifo_buffer is
-        generic(
-            g_DEPTH : natural
-        );
-        port(
-            clk_i        : in  std_logic;
-            rst_i        : in  std_logic; 
-            write_en_i   : in  std_logic; 
-            read_en_i    : in  std_logic; 
-            write_data_i : in  std_logic_vector(95 downto 0); 
-            read_data_o  : out std_logic_vector(95 downto 0);
-            buf_full_o   : out std_logic; 
-            buf_empty_o  : out std_logic 
-        );
-    end component;
 begin
-    uut : fifo_buffer 
+    uut : entity design_lib.fifo_buffer 
     generic map(
         g_DEPTH => 8
     )
@@ -79,7 +69,8 @@ begin
 
     stim_gen : process
     begin
-        write_en <= '1';
+        test_runner_setup(runner, runner_cfg);
+		write_en <= '1';
         for i in 0 to 7 loop
             write_data <= std_logic_vector(test_array(i));
             wait for T;
@@ -112,7 +103,7 @@ begin
         else
             report "ERROR, failed to assert buffer empty status after removals.";
         end if;
-
-        wait;
-    end process;
+        test_runner_cleanup(runner);
+		wait;
+	end process;
 end arch;
