@@ -1,20 +1,16 @@
 library ieee;
 use ieee.std_logic_1164.all;
 
+library vunit_lib;
+context vunit_lib.vunit_context;
+
+library design_lib;
+
 entity time_counter_tb is
+    generic (runner_cfg : string);
 end entity;
 
 architecture arch of time_counter_tb is
-    component time_counter is
-        port(
-            clk_i  : in  std_logic; 
-            rst_i  : in  std_logic; 
-            set_i  : in  std_logic; 
-            time_i : in  std_logic_vector(31 downto 0); 
-            time_o : out std_logic_vector(63 downto 0) 
-        );
-    end component;
-
     signal clk : std_logic := '0';
     signal rst : std_logic := '0';
     signal set : std_logic := '0';
@@ -24,7 +20,7 @@ architecture arch of time_counter_tb is
     constant T : time := 20 ns;
     constant N : integer := 50000100;
 begin
-    uut: time_counter port map(
+    uut: entity design_lib.time_counter port map(
         clk_i => clk,
         rst_i => rst,
         set_i => set,
@@ -35,6 +31,7 @@ begin
 
     process
     begin
+		test_runner_setup(runner, runner_cfg);
 		-- COUNTING FROM 0 ns to 1 s TEST
         -- rst <= '1';
         -- wait for T;
@@ -62,6 +59,7 @@ begin
             -- wait for T/2;
         -- end loop;
         report "Done";
-        wait;
+        test_runner_cleanup(runner);
+		wait;
     end process;
 end arch;
