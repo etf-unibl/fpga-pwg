@@ -35,6 +35,9 @@ architecture arch of fifo_buffer_tb is
         to_unsigned(12500, read_data'length),
         to_unsigned(25000, read_data'length)
     );
+
+    constant vector1 : std_logic_vector (95 downto 0) := (others => '1');
+    constant vector2 : std_logic_vector (95 downto 0) := (others => '0');
 begin
     uut : entity design_lib.fifo_buffer 
     generic map(
@@ -103,6 +106,31 @@ begin
         else
             report "ERROR, failed to assert buffer empty status after removals.";
         end if;
+
+        write_en <= '1';
+        for i in 0 to 7 loop
+            write_data <= std_logic_vector(test_array(i));
+            wait for T;
+        end loop;
+        write_data <= vector1;
+        wait for T;
+        write_data <= vector2;
+        wait for T;
+        write_en <= '0';
+        read_en <= '1';
+        if unsigned(vector1)=unsigned(read_data) then 
+            report "OK, first overwrite passed.";
+        else 
+            report "ERROR, first overwrite failed.";
+        end if; 
+        wait for T;
+        if unsigned(vector2)=unsigned(read_data) then 
+            report "OK, second overwrite passed.";
+        else 
+            report "ERROR, second overwrite failed.";
+        end if; 
+        wait for T;
+        read_en <= '0';
         test_runner_cleanup(runner);
 		wait;
 	end process;
