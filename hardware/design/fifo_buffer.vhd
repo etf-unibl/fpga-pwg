@@ -124,18 +124,19 @@ begin
       end loop;
     elsif rising_edge(clk_i) then
       -- Keep track of total number of data in the buffer
-      if write_en_i = '1' and read_en_i = '0' then
+      if write_en_i = '1' and read_en_i = '0' and fifo_full = '0' then
         fifo_count <= fifo_count + 1;
-      elsif write_en_i = '0' and read_en_i = '1' then
+      elsif write_en_i = '0' and read_en_i = '1' and fifo_empty = '0' then
         fifo_count <= fifo_count - 1;
       end if;
       -- Keep track of write index and control wrapping
-      if write_en_i = '1' and fifo_full = '0' then
+      if write_en_i = '1' then
         if fifo_write_idx = g_DEPTH - 1 then
           fifo_write_idx <= 0;
         else
           fifo_write_idx <= fifo_write_idx + 1;
         end if;
+        fifo_data(fifo_write_idx) <= write_data_i;
       end if;
       -- Keep track of read index and control wrapping
       if read_en_i = '1' and fifo_empty = '0' then
@@ -144,10 +145,6 @@ begin
         else
           fifo_read_idx <= fifo_read_idx + 1;
         end if;
-      end if;
-      -- Add new data if write enable is set
-      if write_en_i = '1' then
-        fifo_data(fifo_write_idx) <= write_data_i;
       end if;
     end if;
   end process;
