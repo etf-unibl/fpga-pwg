@@ -42,6 +42,14 @@ begin
       user_time_i    => user_time_i_tb,
       system_o       => system_o_tb
     );
+	
+  vunit_gen : process
+  begin
+	test_runner_setup(runner, runner_cfg);
+	set_stop_level(failure);
+	show(get_logger(default_checker), display_handler, pass);
+	wait;
+  end process;
 
   clk_gen: process
   begin
@@ -86,8 +94,7 @@ begin
   stim_gen: process
     variable i: integer := 0;
   begin
-    test_runner_setup(runner, runner_cfg);
-    if (i /= 4) then
+    if (i /= 5) then
         wait for 5 ns;
         user_time_i_tb <= timestamp_array(i);
         value_i_tb <= value_array(i);
@@ -105,19 +112,11 @@ begin
     if counter_time_o_tb = user_time_i_tb then
 	    wait for CLOCK_PERIOD/2;
         if value_i_tb(31) = '1' then
-          if system_o_tb = '1' then 
-			      report "OK, generated H at specified time stamp";
-		      else 
-			      report "ERROR, failed to generate output at specified time stamp";
-		      end if;
-      else
-        if system_o_tb = '0' then 
-			    report "OK, generated L at specified time stamp";
-		    else 
-			    report "ERROR, failed to generate output at specified time stamp";
-        end if;
-      end if;
-      dummy <= not dummy;
+			check(system_o_tb = '1', "Checking that logic HIGH is generated at the specified timestamp");
+        else
+			check(system_o_tb = '0', "Checking that logic LOW is generated at the specified timestamp");
+		end if;
+    dummy <= not dummy;
 	end if;
   end process;
 
