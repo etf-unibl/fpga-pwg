@@ -73,6 +73,8 @@ begin
     stim_gen : process
     begin
         test_runner_setup(runner, runner_cfg);
+		set_stop_level(failure);
+		show(get_logger(default_checker), display_handler, pass);
 		write_en <= '1';
         for i in 0 to 7 loop
             write_data <= std_logic_vector(test_array(i));
@@ -80,33 +82,17 @@ begin
         end loop;
         write_en <= '0';
 
-        if buf_full = '1' then
-            report "OK, FIFO buffer is full after insertions.";
-        else
-            report "ERROR, failed to assert buffer full status after insertions.";
-        end if;
+		check(buf_full = '1', "Checking that FIFO buffer is full after insertions");
         
         read_en <= '1';
         for i in 0 to 7 loop
-            if test_array(i) = unsigned(read_data) then
-                report "OK, read correct value at index " & integer'image(i) & "."
-                        & "Expected " & integer'image(to_integer(test_array(i))) &
-                        ", got " & integer'image(to_integer(unsigned(read_data)));
-            else
-                report "ERROR, read incorrect value at index " & integer'image(i) & "." 
-                        & "Expected " & integer'image(to_integer(test_array(i))) &
-                        ", got " & integer'image(to_integer(unsigned(read_data)));
-            end if;
+			check_equal(test_array(i), unsigned(read_data), "Comparing pushed value from FIFO buffer at index " & integer'image(i));
             wait for T;
         end loop;
         read_en <= '0';
-
-        if buf_empty = '1' then
-            report "OK, FIFO buffer is empty after removals.";
-        else
-            report "ERROR, failed to assert buffer empty status after removals.";
-        end if;
-
+		
+		check(buf_empty = '1', "Checking that FIFO buffer is empty after removals");
+		
         write_en <= '1';
         for i in 0 to 7 loop
             write_data <= std_logic_vector(test_array(i));
@@ -117,20 +103,14 @@ begin
         write_data <= vector2;
         wait for T;
         write_en <= '0';
+		
         read_en <= '1';
-        if unsigned(vector1)=unsigned(read_data) then 
-            report "OK, first overwrite passed.";
-        else 
-            report "ERROR, first overwrite failed.";
-        end if; 
+		check_equal(unsigned(vector1), unsigned(read_data), "Comparing first overwrite value");
         wait for T;
-        if unsigned(vector2)=unsigned(read_data) then 
-            report "OK, second overwrite passed.";
-        else 
-            report "ERROR, second overwrite failed.";
-        end if; 
+		check_equal(unsigned(vector2), unsigned(read_data), "Comparing first overwrite value");
         wait for T;
         read_en <= '0';
+		
         test_runner_cleanup(runner);
 		wait;
 	end process;
