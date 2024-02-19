@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['t_5ffifo_5fdata_0',['t_fifo_data',['../classfifo__buffer_1_1arch.html#a1551934fc011868bdb860a2f9852c80c',1,'fifo_buffer::arch']]],
-  ['time_5fi_1',['time_i',['../classtime__counter.html#a221739a51ae6e49718592bb1439ff3a3',1,'time_counter']]],
-  ['time_5fo_2',['time_o',['../classtime__counter.html#ab97d32aa6496fbc72ebad891f3a27f5e',1,'time_counter']]]
+  ['set_5fi_0',['set_i',['../classtime__counter.html#a2487d3b474d7c14ea728401a5888eaf9',1,'time_counter']]],
+  ['std_5flogic_5f1164_1',['std_logic_1164',['../classfifo__buffer.html#acd03516902501cd1c7296a98e22c6fcb',1,'fifo_buffer.std_logic_1164'],['../classoutput__logic.html#acd03516902501cd1c7296a98e22c6fcb',1,'output_logic.std_logic_1164'],['../classregister__file.html#acd03516902501cd1c7296a98e22c6fcb',1,'register_file.std_logic_1164'],['../classtime__counter.html#acd03516902501cd1c7296a98e22c6fcb',1,'time_counter.std_logic_1164']]],
+  ['system_5fo_2',['system_o',['../classoutput__logic.html#a23ba62864381dc516fb7971dc03d4a4c',1,'output_logic']]]
 ];

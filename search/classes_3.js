@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['time_5fcounter_0',['time_counter',['../classtime__counter.html',1,'']]]
+  ['register_5ffile_0',['register_file',['../classregister__file.html',1,'']]]
 ];

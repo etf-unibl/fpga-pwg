@@ -1,4 +1,4 @@
 var searchData=
 [
-  ['time_5fcounter_2evhd_0',['time_counter.vhd',['../time__counter_8vhd.html',1,'']]]
+  ['register_5ffile_2evhd_0',['register_file.vhd',['../register__file_8vhd.html',1,'']]]
 ];

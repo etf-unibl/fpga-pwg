@@ -1,6 +1,6 @@
 var searchData=
 [
-  ['unix_5ftime_5fnext_0',['unix_time_next',['../classtime__counter_1_1arch.html#afd6d8db01d9be2ab2759e0823ee53704',1,'time_counter::arch']]],
-  ['unix_5ftime_5freg_1',['unix_time_reg',['../classtime__counter_1_1arch.html#a3f07d36a729b95555dd437ffe2233193',1,'time_counter::arch']]],
-  ['user_5ftime_5fi_2',['user_time_i',['../classoutput__logic.html#acaccab3f2e7187a8e356d2fa32aebd0b',1,'output_logic']]]
+  ['t_5ffifo_5fdata_0',['t_fifo_data',['../classfifo__buffer_1_1arch.html#a1551934fc011868bdb860a2f9852c80c',1,'fifo_buffer::arch']]],
+  ['time_5fi_1',['time_i',['../classtime__counter.html#a221739a51ae6e49718592bb1439ff3a3',1,'time_counter']]],
+  ['time_5fo_2',['time_o',['../classtime__counter.html#ab97d32aa6496fbc72ebad891f3a27f5e',1,'time_counter']]]
 ];
