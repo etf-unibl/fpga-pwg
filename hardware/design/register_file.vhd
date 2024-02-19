@@ -66,6 +66,7 @@ use ieee.numeric_std.all;
 entity register_file is
   port(
     clk_i            : in  std_logic; --! Clock signal input
+    rst_i            : in  std_logic; --! Asynchronous reset input
     av_read_i        : in  std_logic; --! Avalon-MM read indicator
     av_write_i       : in  std_logic; --! Avalon-MM write indicator
     av_address_i     : in  std_logic_vector(31 downto 0); --! Avalon-MM address signal
@@ -91,13 +92,13 @@ architecture arch of register_file is
   type reg_file_t is array(0 to 6) of std_logic_vector(31 downto 0);
   signal reg_file : reg_file_t := (others => (others => '0'));
 
-  signal address_index : integer := 0;
-  signal rst : std_logic := '0';
+  signal address_index : integer   := 0;
+  signal global_reset  : std_logic := '0';
 begin
   -- Main process for asynch reset and synch actions
-  process(clk_i, rst) is
+  process(clk_i, global_reset) is
   begin
-    if rst = '1' then
+    if global_reset = '1' then
       for i in 0 to 6 loop
         reg_file(i) <= (others => '0');
       end loop;
@@ -115,5 +116,5 @@ begin
   end process;
 
   address_index <= to_integer(unsigned(av_address_i));
-  rst <= reg_file(2)(2);
+  global_reset <= reg_file(2)(2) or rst_i;
 end arch;
