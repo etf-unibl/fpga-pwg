@@ -114,6 +114,6 @@ begin
     end if;
   end process;
 
-  address_index <= to_integer(unsigned(av_address_i));
+  address_index <= to_integer(unsigned(av_address_i))/4;
   rst <= reg_file(2)(2);
 end arch;
