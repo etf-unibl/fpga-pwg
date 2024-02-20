@@ -90,17 +90,14 @@ begin
 		show(get_logger(default_checker), display_handler, pass);
 		
 		info("Writing...");
-		for i in 0 to 6 loop
+		for i in 6 downto 0 loop
 			write_bus(net, avmm_bus, std_logic_vector(to_unsigned(i, address'length)), test_array(i));
 		end loop;
 		
 		info("Reading...");
 		for i in 0 to 2 loop
-			read_bus(net, avmm_bus, std_logic_vector(to_unsigned(i, address'length)), readdata_temp);
-			wait for 2*T;
-			check_equal(readdata, test_array(i), 
+			check_bus(net, avmm_bus, std_logic_vector(to_unsigned(i, address'length)), test_array(i), 
 			"Comparing " & integer'image(i+1) & ". read data result from avalon-mm read transaction");
-			wait for 2*T;
 		end loop;
 	
 		test_runner_cleanup(runner);
