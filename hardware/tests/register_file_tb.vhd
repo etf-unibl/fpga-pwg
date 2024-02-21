@@ -90,7 +90,7 @@ begin
 		show(get_logger(default_checker), display_handler, pass);
 		
 		info("Writing...");
-		for i in 0 to 6 loop
+		for i in 6 downto 0 loop
 			write_bus(net, avmm_bus, std_logic_vector(to_unsigned(i, address'length)), test_array(i));
 		end loop;
 		
@@ -106,4 +106,3 @@ begin
 
 	test_runner_watchdog(runner, 1 us);
 end arch;
-
