@@ -106,4 +106,3 @@ begin
 
 	test_runner_watchdog(runner, 1 us);
 end arch;
-
