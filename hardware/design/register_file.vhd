@@ -152,21 +152,26 @@ begin
 
       if counter_fall = 2 then
         counter_fall <= 0;
-        fifo_write_data(95 downto 64) <= reg_file(3);
-        fifo_write_data(63 downto 32) <= reg_file(4);
-        fifo_write_data(31 downto 0)  <= (others => '0');
-        fifo_write_en <= '1';
-      else
-        fifo_write_data <= (others => '0');
-        fifo_write_en   <= '0';
-      end if;
-
-      if counter_rise = 2 then
+        if reg_file(3) < reg_file(0) then
+		  reg_file(1)(0) <= '1';
+		else
+		  fifo_write_data(95 downto 64) <= reg_file(3);
+          fifo_write_data(63 downto 32) <= reg_file(4);
+          fifo_write_data(31 downto 0)  <= (others => '0');
+          fifo_write_en <= '1';
+		  reg_file(1)(0) <= '0';
+		 end if;
+      elsif counter_rise = 2 then
         counter_rise <= 0;
-        fifo_write_data(95 downto 64) <= reg_file(5);
-        fifo_write_data(63 downto 32) <= reg_file(6);
-        fifo_write_data(31 downto 0)  <= (others => '1');
-        fifo_write_en <= '1';
+		if reg_file(5) < reg_file(0) then
+		  reg_file(1)(0) <= '1';
+        else
+		  fifo_write_data(95 downto 64) <= reg_file(5);
+          fifo_write_data(63 downto 32) <= reg_file(6);
+          fifo_write_data(31 downto 0)  <= (others => '1');
+          fifo_write_en <= '1';
+		  reg_file(1)(0) <= '0';
+		 end if;
       else
         fifo_write_data <= (others => '0');
         fifo_write_en   <= '0';
