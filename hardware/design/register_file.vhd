@@ -132,6 +132,9 @@ begin
         reg_file(1)(2) <= '1';
       elsif fifo_buf_empty = '1' then
         reg_file(1)(1) <= '1';
+      else
+        reg_file(1)(1) <= '0';
+        reg_file(1)(2) <= '0';
       end if;
 
       if av_write_i = '1' and address_index < 7 then
