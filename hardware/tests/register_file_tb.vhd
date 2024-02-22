@@ -89,10 +89,17 @@ begin
 		set_stop_level(failure);
 		show(get_logger(default_checker), display_handler, pass);
 		
+		rst <= '1';
+		wait for T/2;
+		rst <= '0';
+		
 		info("Writing...");
-		for i in 6 downto 0 loop
+		for i in 0 to 6 loop
 			write_bus(net, avmm_bus, std_logic_vector(to_unsigned(i, address'length)), test_array(i));
+			wait_until_idle(net,avmm_bus);
 		end loop;
+		
+		wait for T;
 		
 		info("Reading...");
 		for i in 0 to 2 loop
