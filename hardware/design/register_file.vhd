@@ -62,6 +62,8 @@ use ieee.numeric_std.all;
 --! 'RISE_TS_H' - Holds unix time timestamp for logic HIGH output,
 --! 'RISE_TS_L' - Holds nanosecond time timestamp for logic HIGH output.
 --! The entity itself has ports which are compatible with basic Avalon-MM interface.
+--! This entity also represents a top-level entity for the whole design.
+--! It has one additional port which represents the systems final output.
 
 entity register_file is
   port(
@@ -72,7 +74,8 @@ entity register_file is
     av_address_i     : in  std_logic_vector(31 downto 0); --! Avalon-MM address signal
     av_writedata_i   : in  std_logic_vector(31 downto 0); --! Avalon-MM data input
     av_readdata_o    : out std_logic_vector(31 downto 0); --! Avalon-MM data output
-    av_waitrequest_o : out std_logic --! Avalon-MM wait-state signal for response control
+    av_waitrequest_o : out std_logic; --! Avalon-MM wait-state signal for response control
+    sys_output_o     : out std_logic  --! System output port
   );
 end register_file;
 
@@ -86,22 +89,41 @@ end register_file;
 --! clk_i clock signal. First three registers are write-only, while the rest are
 --! both read and write compatible. The av_waitrequest_o is asserted for every idle
 --! clock cycle (both av_read_i/av_write_i are deasserted) and it deasserts for
---! one clock cycle when read/write operation is executed.
+--! one clock cycle when read/write operation is executed. Besides avalon-mm
+--! slave and register file implementation, the architecture also interconnects
+--! all of the components to create the whole design. It implements FIFO buffer
+--! data exchange, from avalon master to FIFO and from FIFO to the output logic
+--! comparator. It also initializes counter and connects it to the output logic 
+--! comparator. Finally, it connects output from output logic components to the
+--! system output.
 
 architecture arch of register_file is
   type reg_file_t is array(0 to 6) of std_logic_vector(31 downto 0);
   signal reg_file : reg_file_t := (others => (others => '0'));
 
-  signal address_index : integer   := 0;
-  signal global_reset  : std_logic := '0';
-  signal fifo_write_en : std_logic := '0';
-  signal fifo_read_en : std_logic := '0';
-  signal fifo_buf_full : std_logic := '0';
-  signal fifo_buf_empty : std_logic := '0';
+  -- Internal arch signals
+  signal global_reset    : std_logic := '0';
+  signal counter_rise    : integer   :=  0;
+  signal counter_fall    : integer   :=  0;
+  signal address_index   : integer   :=  0;
+  
+  -- FIFO buffer connection signals
+  signal fifo_write_en   : std_logic := '0';
+  signal fifo_read_en    : std_logic := '0';
+  signal fifo_buf_full   : std_logic := '0';
+  signal fifo_buf_empty  : std_logic := '0';
   signal fifo_write_data : std_logic_vector(95 downto 0) := (others => '0');
-  signal fifo_read_data : std_logic_vector(95 downto 0) := (others => '0');
-  signal counter_rise : integer := 0;
-  signal counter_fall : integer := 0;
+  signal fifo_read_data  : std_logic_vector(95 downto 0) := (others => '0');
+
+  -- Time counter connection signals
+  signal timer_set      : std_logic := 0;
+  signal timer_set_time : std_logic_vector(31 downto 0) := (others => '0');
+  signal timer_output   : std_logic_vector(63 downto 0) := (others => '0');
+ 
+  -- Output logic connection signals
+  signal out_log_value     : std_logic_vector(31 downto 0) := (others => '0');
+  signal out_log_user_time : std_logic_vector(63 downto 0) := (others => '0');
+  signal out_log_output    : std_logic := '0';
 
   component fifo_buffer is
     generic(
@@ -119,7 +141,29 @@ architecture arch of register_file is
     );
   end component;
 
+  component time_counter is
+    port(
+      clk_i  : in  std_logic; 
+      rst_i  : in  std_logic; 
+      set_i  : in  std_logic;
+      time_i : in  std_logic_vector(31 downto 0);
+      time_o : out std_logic_vector(63 downto 0)
+    );
+  end component;
+
+  component output_logic is
+    port(
+      clk_i          : in  std_logic; 
+      rst_i          : in  std_logic; 
+      value_i        : in  std_logic_vector(31 downto 0); 
+      counter_time_i : in  std_logic_vector(63 downto 0); 
+      user_time_i    : in  std_logic_vector(63 downto 0); 
+      system_o       : out std_logic                      
+    );
+  end component;
+
 begin
+  -- TODO: Read from FIFO after output 
   -- Main process for asynch reset and synch actions
   process(clk_i, global_reset) is
   begin
@@ -128,6 +172,8 @@ begin
         reg_file(i) <= (others => '0');
       end loop;
     elsif rising_edge(clk_i) then
+
+      -- FIFO flags assertion part
       if fifo_buf_full = '1' then
         reg_file(1)(2) <= '1';
       elsif fifo_buf_empty = '1' then
@@ -137,6 +183,7 @@ begin
         reg_file(1)(2) <= '0';
       end if;
 
+      -- Avalon-MM write operaion
       if av_write_i = '1' and address_index < 7 then
         reg_file(address_index) <= av_writedata_i;
         av_waitrequest_o <= '0';
@@ -146,13 +193,24 @@ begin
         if address_index = 5 or address_index = 6 then
           counter_rise <= counter_rise + 1;
         end if;
+        if address_index = 0 then
+          timer_set_time <= reg_file(0);
+          timer_set <= '1';
+        else
+          timer_set_time <= (others => '0');
+          timer_set <= '0';
+        end if;
+      -- Avalon-MM read operation
       elsif av_read_i = '1' and address_index < 3 then
         av_readdata_o <= reg_file(address_index);
         av_waitrequest_o <= '0';
       else
         av_waitrequest_o <= '1';
+        timer_set_time <= (others => '0');
+        timer_set <= '0';
       end if;
 
+      -- Send data to FIFO buffer when both registers are ready
       if counter_fall = 2 then
         counter_fall <= 0;
         if reg_file(3) < reg_file(0) then
@@ -179,6 +237,7 @@ begin
         fifo_write_data <= (others => '0');
         fifo_write_en   <= '0';
       end if;
+
     end if;
   end process;
 
@@ -198,5 +257,24 @@ begin
     read_data_o  => fifo_read_data,
     buf_full_o   => fifo_buf_full,
     buf_empty_o  => fifo_buf_empty
+  );
+
+  timer : time_counter
+  port map(
+    clk_i  => clk_i,
+    rst_i  => global_reset,
+    set_i  => timer_set,
+    time_i => timer_set_time,
+    time_o => timer_output
+  );
+
+  out_log : output_logic
+  port map(
+    clk_i          => clk_i,
+    rst_i          => global_reset,
+    value_i        => out_log_value,
+    counter_time_i => timer_output,
+    user_time_i    => out_log_user_time,
+    system_o       => out_log_output
   );
 end arch;
