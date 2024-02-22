@@ -106,6 +106,7 @@ architecture arch of register_file is
   signal counter_rise    : integer   :=  0;
   signal counter_fall    : integer   :=  0;
   signal address_index   : integer   :=  0;
+  signal read_ready      : boolean   := false;
   
   -- FIFO buffer connection signals
   signal fifo_write_en   : std_logic := '0';
@@ -121,9 +122,10 @@ architecture arch of register_file is
   signal timer_output   : std_logic_vector(63 downto 0) := (others => '0');
  
   -- Output logic connection signals
-  signal out_log_value     : std_logic_vector(31 downto 0) := (others => '0');
-  signal out_log_user_time : std_logic_vector(63 downto 0) := (others => '0');
-  signal out_log_output    : std_logic := '0';
+  signal out_log_value       : std_logic_vector(31 downto 0) := (others => '0');
+  signal out_log_user_time   : std_logic_vector(63 downto 0) := (others => '0');
+  signal out_log_output      : std_logic := '0';
+  signal out_log_comparator	 : std_logic := '0';
 
   component fifo_buffer is
     generic(
@@ -158,14 +160,15 @@ architecture arch of register_file is
       value_i        : in  std_logic_vector(31 downto 0); 
       counter_time_i : in  std_logic_vector(63 downto 0); 
       user_time_i    : in  std_logic_vector(63 downto 0); 
-      system_o       : out std_logic                      
+      system_o       : out std_logic;
+      comparator_o   : out std_logic
     );
   end component;
 
 begin
-  -- TODO: Read from FIFO after output 
   -- Main process for asynch reset and synch actions
   process(clk_i, global_reset) is
+    variable first_write : boolean := true;
   begin
     if global_reset = '1' then
       for i in 0 to 6 loop
@@ -194,15 +197,20 @@ begin
           counter_rise <= counter_rise + 1;
         end if;
         if address_index = 0 then
-          timer_set_time <= reg_file(0);
+          timer_set_time <= av_writedata_i;
           timer_set <= '1';
         else
           timer_set_time <= (others => '0');
           timer_set <= '0';
         end if;
+
       -- Avalon-MM read operation
       elsif av_read_i = '1' and address_index < 3 then
-        av_readdata_o <= reg_file(address_index);
+        if address_index = 0 then
+          av_readdata_o <= timer_output(63 downto 32);
+        else
+          av_readdata_o <= reg_file(address_index);
+        end if;
         av_waitrequest_o <= '0';
       else
         av_waitrequest_o <= '1';
@@ -213,7 +221,7 @@ begin
       -- Send data to FIFO buffer when both registers are ready
       if counter_fall = 2 then
         counter_fall <= 0;
-        if reg_file(3) < reg_file(0) then
+        if reg_file(3) < timer_output(63 downto 32) then
           reg_file(1)(0) <= '1';
         else
           fifo_write_data(95 downto 64) <= reg_file(3);
@@ -221,10 +229,16 @@ begin
           fifo_write_data(31 downto 0)  <= (others => '0');
           fifo_write_en <= '1';
           reg_file(1)(0) <= '0';
+		  if first_write = true then
+		    out_log_value <= (others => '0');
+            out_log_user_time(63 downto 32) <= reg_file(3);
+            out_log_user_time(31 downto 0) <= reg_file(4);
+            first_write := false;
+          end if;
         end if;
       elsif counter_rise = 2 then
         counter_rise <= 0;
-        if reg_file(5) < reg_file(0) then
+        if reg_file(5) < timer_output(63 downto 32) then
           reg_file(1)(0) <= '1';
         else
           fifo_write_data(95 downto 64) <= reg_file(5);
@@ -232,17 +246,41 @@ begin
           fifo_write_data(31 downto 0)  <= (others => '1');
           fifo_write_en <= '1';
           reg_file(1)(0) <= '0';
+          
+          if first_write = true then
+		    out_log_value <= (others => '1');
+            out_log_user_time(63 downto 32) <= reg_file(5);
+            out_log_user_time(31 downto 0) <= reg_file(6);
+            first_write := false;
+          end if;
         end if;
       else
         fifo_write_data <= (others => '0');
         fifo_write_en   <= '0';
       end if;
 
+      if out_log_comparator = '1' and fifo_buf_empty = '0' then
+        fifo_read_en <= '1';
+		read_ready   <= true;
+        first_write  <= false;
+      else
+        fifo_read_en <= '0';
+        read_ready   <= false;
+        first_write  <= true;
+      end if;
+
+      if read_ready = true then
+        out_log_value     <= fifo_read_data(31 downto 0);
+        out_log_user_time <= fifo_read_data(95 downto 32);
+      end if;
     end if;
   end process;
 
   address_index <= to_integer(unsigned(av_address_i));
   global_reset <= reg_file(2)(2) or rst_i;
+  
+  -- Output logic
+  system_o <= out_log_output and reg_file(2)(0);
 
   fifo : fifo_buffer
   generic map(
@@ -275,6 +313,7 @@ begin
     value_i        => out_log_value,
     counter_time_i => timer_output,
     user_time_i    => out_log_user_time,
-    system_o       => out_log_output
+    system_o       => out_log_output,
+    comparator_o   => out_log_comparator
   );
 end arch;

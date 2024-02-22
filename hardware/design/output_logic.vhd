@@ -52,24 +52,24 @@ use ieee.numeric_std.all;
 --! It compares the input counter time with the user specified time and sets
 --! the system output accordingly. The output is a single bit indicating the
 --! match between the counter time and user time.
-
---! @structure
 --! The entity has the following ports:
 --! `clk_i` is the clock input, used to synchronize the circuit.
 --! `rst_i` is the reset input, which resets the time signals when asserted.
 --! `value_i` is the input signal representing a value to be decoded.
 --! `counter_time_i` is the input signal representing the counter time.
 --! `user_time_i` is the input signal representing the user-specified time.
---! `system_o` is the output signal indicating the match between counter and user time.
+--! `system_o` is the output signal set from the user for the desired timestamp.
+--! `comparator_o` is the output signal indicating the match between counter and user time.
 
 entity output_logic is
   port(
-    clk_i          :  in std_logic; --! Clock signal input
-    rst_i          :  in std_logic; --! Asynchronous reset signal input
-    value_i        :  in std_logic_vector(31 downto 0); --! Input signal representing a value to be decoded
-    counter_time_i :  in std_logic_vector(63 downto 0); --! Input signal representing the counter time
-    user_time_i    :  in std_logic_vector(63 downto 0); --! Input signal representing the user-specified time
-    system_o       : out std_logic                      --! Output signal indicating the match between counter and user time
+    clk_i          : in  std_logic; --! Clock signal input
+    rst_i          : in  std_logic; --! Asynchronous reset signal input
+    value_i        : in  std_logic_vector(31 downto 0); --! Input signal representing a value to be decoded
+    counter_time_i : in  std_logic_vector(63 downto 0); --! Input signal representing the counter time
+    user_time_i    : in  std_logic_vector(63 downto 0); --! Input signal representing the user-specified time
+    system_o       : out std_logic; --! Output signal indicating the match between counter and user time
+	comparator_o   : out std_logic --! Output signal from comparator
   );
 end output_logic;
 
@@ -121,5 +121,6 @@ begin
   q_next <= val_decoded when q_cmp = '1' else q_reg;
 
   -- output logic
-  system_o <= q_next;
+  system_o     <= q_next;
+  comparator_o <= q_cmp;
 end arch;
