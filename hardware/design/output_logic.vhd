@@ -69,7 +69,7 @@ entity output_logic is
     counter_time_i : in  std_logic_vector(63 downto 0); --! Input signal representing the counter time
     user_time_i    : in  std_logic_vector(63 downto 0); --! Input signal representing the user-specified time
     system_o       : out std_logic; --! Output signal indicating the match between counter and user time
-	comparator_o   : out std_logic --! Output signal from comparator
+    comparator_o   : out std_logic --! Output signal from comparator
   );
 end output_logic;
 

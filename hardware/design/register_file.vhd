@@ -93,7 +93,7 @@ end register_file;
 --! slave and register file implementation, the architecture also interconnects
 --! all of the components to create the whole design. It implements FIFO buffer
 --! data exchange, from avalon master to FIFO and from FIFO to the output logic
---! comparator. It also initializes counter and connects it to the output logic 
+--! comparator. It also initializes counter and connects it to the output logic
 --! comparator. Finally, it connects output from output logic components to the
 --! system output.
 
@@ -107,7 +107,7 @@ architecture arch of register_file is
   signal counter_fall    : integer   :=  0;
   signal address_index   : integer   :=  0;
   signal read_ready      : boolean   := false;
-  
+
   -- FIFO buffer connection signals
   signal fifo_write_en   : std_logic := '0';
   signal fifo_read_en    : std_logic := '0';
@@ -117,15 +117,15 @@ architecture arch of register_file is
   signal fifo_read_data  : std_logic_vector(95 downto 0) := (others => '0');
 
   -- Time counter connection signals
-  signal timer_set      : std_logic := 0;
+  signal timer_set      : std_logic := '0';
   signal timer_set_time : std_logic_vector(31 downto 0) := (others => '0');
   signal timer_output   : std_logic_vector(63 downto 0) := (others => '0');
- 
+
   -- Output logic connection signals
   signal out_log_value       : std_logic_vector(31 downto 0) := (others => '0');
   signal out_log_user_time   : std_logic_vector(63 downto 0) := (others => '0');
   signal out_log_output      : std_logic := '0';
-  signal out_log_comparator	 : std_logic := '0';
+  signal out_log_comparator  : std_logic := '0';
 
   component fifo_buffer is
     generic(
@@ -145,8 +145,8 @@ architecture arch of register_file is
 
   component time_counter is
     port(
-      clk_i  : in  std_logic; 
-      rst_i  : in  std_logic; 
+      clk_i  : in  std_logic;
+      rst_i  : in  std_logic;
       set_i  : in  std_logic;
       time_i : in  std_logic_vector(31 downto 0);
       time_o : out std_logic_vector(63 downto 0)
@@ -155,11 +155,11 @@ architecture arch of register_file is
 
   component output_logic is
     port(
-      clk_i          : in  std_logic; 
-      rst_i          : in  std_logic; 
-      value_i        : in  std_logic_vector(31 downto 0); 
-      counter_time_i : in  std_logic_vector(63 downto 0); 
-      user_time_i    : in  std_logic_vector(63 downto 0); 
+      clk_i          : in  std_logic;
+      rst_i          : in  std_logic;
+      value_i        : in  std_logic_vector(31 downto 0);
+      counter_time_i : in  std_logic_vector(63 downto 0);
+      user_time_i    : in  std_logic_vector(63 downto 0);
       system_o       : out std_logic;
       comparator_o   : out std_logic
     );
@@ -229,8 +229,8 @@ begin
           fifo_write_data(31 downto 0)  <= (others => '0');
           fifo_write_en <= '1';
           reg_file(1)(0) <= '0';
-		  if first_write = true then
-		    out_log_value <= (others => '0');
+          if first_write = true then
+            out_log_value <= (others => '0');
             out_log_user_time(63 downto 32) <= reg_file(3);
             out_log_user_time(31 downto 0) <= reg_file(4);
             first_write := false;
@@ -246,9 +246,9 @@ begin
           fifo_write_data(31 downto 0)  <= (others => '1');
           fifo_write_en <= '1';
           reg_file(1)(0) <= '0';
-          
+
           if first_write = true then
-		    out_log_value <= (others => '1');
+            out_log_value <= (others => '1');
             out_log_user_time(63 downto 32) <= reg_file(5);
             out_log_user_time(31 downto 0) <= reg_file(6);
             first_write := false;
@@ -261,12 +261,12 @@ begin
 
       if out_log_comparator = '1' and fifo_buf_empty = '0' then
         fifo_read_en <= '1';
-		read_ready   <= true;
-        first_write  <= false;
+        read_ready   <= true;
+        first_write  := false;
       else
         fifo_read_en <= '0';
         read_ready   <= false;
-        first_write  <= true;
+        first_write  := true;
       end if;
 
       if read_ready = true then
@@ -278,9 +278,9 @@ begin
 
   address_index <= to_integer(unsigned(av_address_i));
   global_reset <= reg_file(2)(2) or rst_i;
-  
+
   -- Output logic
-  system_o <= out_log_output and reg_file(2)(0);
+  sys_output_o <= out_log_output and reg_file(2)(0);
 
   fifo : fifo_buffer
   generic map(
