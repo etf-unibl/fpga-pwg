@@ -88,31 +88,40 @@ begin
 		"Checking if FIFO buffer empty flag is set before transactions");
 
 		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(0, address'length)), std_logic_vector(to_unsigned(1000, writedata'length)));
+		wait_until_idle(net, avmm_bus);
 		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(5, address'length)), std_logic_vector(to_unsigned(1500, writedata'length)));
+		wait_until_idle(net, avmm_bus);
 		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(6, address'length)), std_logic_vector(to_unsigned(30000, writedata'length)));
+		wait_until_idle(net, avmm_bus);
 		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(3, address'length)), std_logic_vector(to_unsigned(1500, writedata'length)));
+		wait_until_idle(net, avmm_bus);
 		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(4, address'length)), std_logic_vector(to_unsigned(50000, writedata'length)));
+		wait_until_idle(net, avmm_bus);
 
 		--Clear status register
 		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(1, address'length)), std_logic_vector(to_unsigned(0, writedata'length)));
-
-		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(3, address'length)), std_logic_vector(to_unsigned(150, writedata'length)));
-		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(4, address'length)), std_logic_vector(to_unsigned(150, writedata'length)));
-
 		wait_until_idle(net, avmm_bus);
+		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(3, address'length)), std_logic_vector(to_unsigned(150, writedata'length)));
+		wait_until_idle(net, avmm_bus);
+		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(4, address'length)), std_logic_vector(to_unsigned(150, writedata'length)));
+		wait_until_idle(net, avmm_bus);
+
 		wait for T;
 
 		check_bus(net, avmm_bus, std_logic_vector(to_unsigned(1, address'length)), std_logic_vector(to_unsigned(1, readdata'length)), 
 		"Checking if SYS_ERR flag is set after bad transaction");
 
-		for i in 0 to 2 loop
+		for i in 0 to 6 loop
 			write_bus(net, avmm_bus, std_logic_vector(to_unsigned(5, address'length)), std_logic_vector(to_unsigned(1500, writedata'length)));
+			wait_until_idle(net, avmm_bus);
 			write_bus(net, avmm_bus, std_logic_vector(to_unsigned(6, address'length)), std_logic_vector(to_unsigned((i+1)*60000, writedata'length)));
+			wait_until_idle(net, avmm_bus);
 			write_bus(net, avmm_bus, std_logic_vector(to_unsigned(3, address'length)), std_logic_vector(to_unsigned(1500, writedata'length)));
+			wait_until_idle(net, avmm_bus);
 			write_bus(net, avmm_bus, std_logic_vector(to_unsigned(4, address'length)), std_logic_vector(to_unsigned((i+1)*80000, writedata'length)));
+			wait_until_idle(net, avmm_bus);
 		end loop;
 		
-		wait_until_idle(net, avmm_bus);
 		wait for 2*T;
 
 		check_bus(net, avmm_bus, std_logic_vector(to_unsigned(1, address'length)), std_logic_vector(to_unsigned(4, readdata'length)), 
@@ -120,11 +129,13 @@ begin
 		
 		-- Clear control and status registers
 		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(1, address'length)), std_logic_vector(to_unsigned(0, writedata'length)));
+		wait_until_idle(net, avmm_bus);
 		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(2, address'length)), std_logic_vector(to_unsigned(0, writedata'length)));
+		wait_until_idle(net, avmm_bus);
 	
 		test_runner_cleanup(runner);
 		wait;
 	end process;
 
-	test_runner_watchdog(runner, 1 us);
+	test_runner_watchdog(runner, 20 us);
 end arch;

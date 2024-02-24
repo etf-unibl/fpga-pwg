@@ -106,7 +106,6 @@ architecture arch of register_file is
   signal counter_rise    : integer   :=  0;
   signal counter_fall    : integer   :=  0;
   signal address_index   : integer   :=  0;
-  signal read_ready      : boolean   := false;
 
   -- FIFO buffer connection signals
   signal fifo_write_en   : std_logic := '0';
@@ -168,7 +167,6 @@ architecture arch of register_file is
 begin
   -- Main process for asynch reset and synch actions
   process(clk_i, global_reset) is
-    variable first_write : boolean := true;
   begin
     if global_reset = '1' then
       for i in 0 to 6 loop
@@ -219,7 +217,7 @@ begin
       end if;
 
       -- Send data to FIFO buffer when both registers are ready
-      if counter_fall = 2 then
+      if counter_fall = 4 then
         counter_fall <= 0;
         if reg_file(3) < timer_output(63 downto 32) then
           reg_file(1)(0) <= '1';
@@ -229,14 +227,8 @@ begin
           fifo_write_data(31 downto 0)  <= (others => '0');
           fifo_write_en <= '1';
           reg_file(1)(0) <= '0';
-          if first_write = true then
-            out_log_value <= (others => '0');
-            out_log_user_time(63 downto 32) <= reg_file(3);
-            out_log_user_time(31 downto 0) <= reg_file(4);
-            first_write := false;
-          end if;
         end if;
-      elsif counter_rise = 2 then
+      elsif counter_rise = 4 then
         counter_rise <= 0;
         if reg_file(5) < timer_output(63 downto 32) then
           reg_file(1)(0) <= '1';
@@ -246,13 +238,6 @@ begin
           fifo_write_data(31 downto 0)  <= (others => '1');
           fifo_write_en <= '1';
           reg_file(1)(0) <= '0';
-
-          if first_write = true then
-            out_log_value <= (others => '1');
-            out_log_user_time(63 downto 32) <= reg_file(5);
-            out_log_user_time(31 downto 0) <= reg_file(6);
-            first_write := false;
-          end if;
         end if;
       else
         fifo_write_data <= (others => '0');
@@ -261,30 +246,26 @@ begin
 
       if out_log_comparator = '1' and fifo_buf_empty = '0' then
         fifo_read_en <= '1';
-        read_ready   <= true;
-        first_write  := false;
       else
         fifo_read_en <= '0';
-        read_ready   <= false;
-        first_write  := true;
       end if;
 
-      if read_ready = true then
-        out_log_value     <= fifo_read_data(31 downto 0);
-        out_log_user_time <= fifo_read_data(95 downto 32);
-      end if;
     end if;
   end process;
 
   address_index <= to_integer(unsigned(av_address_i));
   global_reset <= reg_file(2)(2) or rst_i;
 
+  -- Set output logic component signals
+  out_log_value     <= fifo_read_data(31 downto 0);
+  out_log_user_time <= fifo_read_data(95 downto 32);
+
   -- Output logic
   sys_output_o <= out_log_output and reg_file(2)(0);
 
   fifo : fifo_buffer
   generic map(
-    g_DEPTH => 8
+    g_DEPTH => 16
   )
   port map(
     clk_i        => clk_i,
