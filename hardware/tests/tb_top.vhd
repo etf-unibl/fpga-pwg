@@ -17,6 +17,7 @@ architecture testbench of tb_top is
   signal counter_time_o_tb: std_logic_vector(63 downto 0);
   signal value_i_tb, time_i_tb: std_logic_vector(31 downto 0);
   signal system_o_tb: std_logic;
+  signal comparator_o_tb : std_logic;
   type timestamp_array_t is array(0 to 4) of std_logic_vector(63 downto 0);
   signal timestamp_array : timestamp_array_t;
   type value_array_t is array(0 to 4) of std_logic_vector(31 downto 0);
@@ -40,7 +41,8 @@ begin
       value_i        => value_i_tb,  
       counter_time_i => counter_time_o_tb,
       user_time_i    => user_time_i_tb,
-      system_o       => system_o_tb
+      system_o       => system_o_tb,
+      comparator_o   => comparator_o_tb
     );
 	
   vunit_gen : process
