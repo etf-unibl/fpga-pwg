@@ -87,7 +87,9 @@ Inheritance diagram for register_file:</div>
  <div class="center">
   <img src="classregister__file.png" usemap="#register_5Ffile_map" alt=""/>
   <map id="register_5Ffile_map" name="register_5Ffile_map">
-<area href="classfifo__buffer.html" title="FIFO buffer desing used to store user defined timestamps and values." alt="fifo_buffer" shape="rect" coords="0,0,79,24"/>
+<area href="classfifo__buffer.html" title="FIFO buffer desing used to store user defined timestamps and values." alt="fifo_buffer" shape="rect" coords="0,0,84,24"/>
+<area href="classtime__counter.html" title="Time counter desing counting time in unix format + nanoseconds." alt="time_counter" shape="rect" coords="94,0,178,24"/>
+<area href="classoutput__logic.html" title="Output logic entity description." alt="output_logic" shape="rect" coords="188,0,272,24"/>
   </map>
 </div></div>
 <table class="memberdecls">
@@ -127,10 +129,12 @@ Ports</h2></td></tr>
 <tr class="memdesc:a58068baad1bc1456417bbf91c0f44209"><td class="mdescLeft">&#160;</td><td class="mdescLeft">&#160;</td><td class="mdescRight">Avalon-MM data output.  <a href="#a58068baad1bc1456417bbf91c0f44209"></a><br /></td></tr>
 <tr class="memitem:ab5fb1fc6366214fdd2c17dc61472e6d2" id="r_ab5fb1fc6366214fdd2c17dc61472e6d2"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#ab5fb1fc6366214fdd2c17dc61472e6d2">av_waitrequest_o</a> &#160;</td><td class="memItemLeft" align="right" valign="top"> <b><b><span class="keywordflow">out</span><span class="vhdlchar"> </span></b></b>&#160;</td><td class="memItemRight" valign="bottom"> <b><span class="keywordtype">std_logic</span><span class="vhdlchar"> </span></b></td></tr>
 <tr class="memdesc:ab5fb1fc6366214fdd2c17dc61472e6d2"><td class="mdescLeft">&#160;</td><td class="mdescLeft">&#160;</td><td class="mdescRight">Avalon-MM wait-state signal for response control.  <a href="#ab5fb1fc6366214fdd2c17dc61472e6d2"></a><br /></td></tr>
+<tr class="memitem:a9b3d4d269b10fde7461576c181ceac26" id="r_a9b3d4d269b10fde7461576c181ceac26"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a9b3d4d269b10fde7461576c181ceac26">sys_output_o</a> &#160;</td><td class="memItemLeft" align="right" valign="top"> <b><b><span class="keywordflow">out</span><span class="vhdlchar"> </span></b></b>&#160;</td><td class="memItemRight" valign="bottom"> <b><span class="keywordtype">std_logic</span><span class="vhdlchar"> </span></b></td></tr>
+<tr class="memdesc:a9b3d4d269b10fde7461576c181ceac26"><td class="mdescLeft">&#160;</td><td class="mdescLeft">&#160;</td><td class="mdescRight">System output port.  <a href="#a9b3d4d269b10fde7461576c181ceac26"></a><br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
 <div class="textblock"><p>Register file entity with Avalon-MM slave interface. </p>
-<p>This entity is designed as an Avalon-MM slave device and it has the purpose of creating a register file. Registers from the register file have to be accessed by the Avalon-MM master so that the user can configure the current system time, timestamps, to control the device and to check the status signals. Register file contains the following registers: 'SYS_TIME' - Holds the current system time in unix time format, 'STATUS' - Holds status signals from FIFO buffer and ERROR flag, 'CONTROL' - Holds control signals and flags used to configure the device, 'FALL_TS_H' - Holds unix time timestamp for logic LOW output, 'FALL_TS_L' - Holds nanosecond time timestamp for logic LOW output, 'RISE_TS_H' - Holds unix time timestamp for logic HIGH output, 'RISE_TS_L' - Holds nanosecond time timestamp for logic HIGH output. The entity itself has ports which are compatible with basic Avalon-MM interface. </p>
+<p>This entity is designed as an Avalon-MM slave device and it has the purpose of creating a register file. Registers from the register file have to be accessed by the Avalon-MM master so that the user can configure the current system time, timestamps, to control the device and to check the status signals. Register file contains the following registers: 'SYS_TIME' - Holds the current system time in unix time format, 'STATUS' - Holds status signals from FIFO buffer and ERROR flag, 'CONTROL' - Holds control signals and flags used to configure the device, 'FALL_TS_H' - Holds unix time timestamp for logic LOW output, 'FALL_TS_L' - Holds nanosecond time timestamp for logic LOW output, 'RISE_TS_H' - Holds unix time timestamp for logic HIGH output, 'RISE_TS_L' - Holds nanosecond time timestamp for logic HIGH output. The entity itself has ports which are compatible with basic Avalon-MM interface. This entity also represents a top-level entity for the whole design. It has one additional port which represents the systems final output. </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="aba06399e9e3d4ffc0920279e86121f00" name="aba06399e9e3d4ffc0920279e86121f00"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#aba06399e9e3d4ffc0920279e86121f00">&#9670;&#160;</a></span>av_address_i</h2>
@@ -305,6 +309,22 @@ Ports</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Use logic elements. </p>
+
+</div>
+</div>
+<a id="a9b3d4d269b10fde7461576c181ceac26" name="a9b3d4d269b10fde7461576c181ceac26"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a9b3d4d269b10fde7461576c181ceac26">&#9670;&#160;</a></span>sys_output_o</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a9b3d4d269b10fde7461576c181ceac26">sys_output_o</a> <b><span class="keywordflow">out</span><span class="vhdlchar"> </span></b> <b><span class="keywordtype">std_logic</span><span class="vhdlchar"> </span></b> </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>System output port. </p>
 
 </div>
 </div>

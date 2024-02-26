@@ -1,8 +1,6 @@
 var searchData=
 [
-  ['read_5fdata_5fo_0',['read_data_o',['../classfifo__buffer.html#a1007d9523a61a80823d3b5d5bfd772d9',1,'fifo_buffer']]],
-  ['read_5fen_5fi_1',['read_en_i',['../classfifo__buffer.html#afe73a1e3661446ca26c8a30efe000a83',1,'fifo_buffer']]],
-  ['reg_5ffile_2',['reg_file',['../classregister__file_1_1arch.html#aaec78800863634e1e4c943bd1c00aa49',1,'register_file::arch']]],
-  ['reg_5ffile_5ft_3',['reg_file_t',['../classregister__file_1_1arch.html#a6474b9c02bb0b3cf23addd50dba1258b',1,'register_file::arch']]],
-  ['rst_5fi_4',['rst_i',['../classfifo__buffer.html#ab86c7a8eec3a8327e506892977f85708',1,'fifo_buffer.rst_i'],['../classoutput__logic.html#ab86c7a8eec3a8327e506892977f85708',1,'output_logic.rst_i'],['../classregister__file.html#ab86c7a8eec3a8327e506892977f85708',1,'register_file.rst_i'],['../classtime__counter.html#ab86c7a8eec3a8327e506892977f85708',1,'time_counter.rst_i']]]
+  ['q_5fcmp_0',['q_cmp',['../classoutput__logic_1_1arch.html#a632cbf1ddb5c8a13f1ef884c957e9c1b',1,'output_logic::arch']]],
+  ['q_5fnext_1',['q_next',['../classoutput__logic_1_1arch.html#a635b5c4bfb4ed522e3c80f13f9656182',1,'output_logic::arch']]],
+  ['q_5freg_2',['q_reg',['../classoutput__logic_1_1arch.html#a031db40eb43e930cf370e1d197c739c0',1,'output_logic::arch']]]
 ];

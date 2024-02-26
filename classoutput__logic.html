@@ -79,8 +79,17 @@ $(function() {
 </div><!--header-->
 <div class="contents">
 
-<p>Output logic entity description @structure The entity has the following ports: `clk_i` is the clock input, used to synchronize the circuit. `rst_i` is the reset input, which resets the time signals when asserted. `value_i` is the input signal representing a value to be decoded. `counter_time_i` is the input signal representing the counter time. `user_time_i` is the input signal representing the user-specified time. `system_o` is the output signal indicating the match between counter and user time.  
+<p>Output logic entity description.  
  <a href="#details">More...</a></p>
+<div class="dynheader">
+Inheritance diagram for output_logic:</div>
+<div class="dyncontent">
+ <div class="center">
+  <img src="classoutput__logic.png" usemap="#output_5Flogic_map" alt=""/>
+  <map id="output_5Flogic_map" name="output_5Flogic_map">
+<area href="classregister__file.html" title="Register file entity with Avalon-MM slave interface." alt="register_file" shape="rect" coords="0,56,80,80"/>
+  </map>
+</div></div>
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="nested-classes" name="nested-classes"></a>
 Entities</h2></td></tr>
@@ -114,10 +123,12 @@ Ports</h2></td></tr>
 <tr class="memdesc:acaccab3f2e7187a8e356d2fa32aebd0b"><td class="mdescLeft">&#160;</td><td class="mdescLeft">&#160;</td><td class="mdescRight">Input signal representing the user-specified time.  <a href="#acaccab3f2e7187a8e356d2fa32aebd0b"></a><br /></td></tr>
 <tr class="memitem:a23ba62864381dc516fb7971dc03d4a4c" id="r_a23ba62864381dc516fb7971dc03d4a4c"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a23ba62864381dc516fb7971dc03d4a4c">system_o</a> &#160;</td><td class="memItemLeft" align="right" valign="top"> <b><b><span class="keywordflow">out</span><span class="vhdlchar"> </span></b></b>&#160;</td><td class="memItemRight" valign="bottom"> <b><span class="keywordtype">std_logic</span><span class="vhdlchar"> </span></b></td></tr>
 <tr class="memdesc:a23ba62864381dc516fb7971dc03d4a4c"><td class="mdescLeft">&#160;</td><td class="mdescLeft">&#160;</td><td class="mdescRight">Output signal indicating the match between counter and user time.  <a href="#a23ba62864381dc516fb7971dc03d4a4c"></a><br /></td></tr>
+<tr class="memitem:a221bde0c9ce5ad6400b7d7c0b3e76baf" id="r_a221bde0c9ce5ad6400b7d7c0b3e76baf"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a221bde0c9ce5ad6400b7d7c0b3e76baf">comparator_o</a> &#160;</td><td class="memItemLeft" align="right" valign="top"> <b><b><span class="keywordflow">out</span><span class="vhdlchar"> </span></b></b>&#160;</td><td class="memItemRight" valign="bottom"> <b><span class="keywordtype">std_logic</span><span class="vhdlchar"> </span></b></td></tr>
+<tr class="memdesc:a221bde0c9ce5ad6400b7d7c0b3e76baf"><td class="mdescLeft">&#160;</td><td class="mdescLeft">&#160;</td><td class="mdescRight">Output signal from comparator.  <a href="#a221bde0c9ce5ad6400b7d7c0b3e76baf"></a><br /></td></tr>
 </table>
 <a name="details" id="details"></a><h2 class="groupheader">Detailed Description</h2>
-<div class="textblock"><p>Output logic entity description @structure The entity has the following ports: `clk_i` is the clock input, used to synchronize the circuit. `rst_i` is the reset input, which resets the time signals when asserted. `value_i` is the input signal representing a value to be decoded. `counter_time_i` is the input signal representing the counter time. `user_time_i` is the input signal representing the user-specified time. `system_o` is the output signal indicating the match between counter and user time. </p>
-<p>Entity is responsible for implementig the output logic circuit. It compares the input counter time with the user specified time and sets the system output accordingly. The output is a single bit indicating the match between the counter time and user time. </p>
+<div class="textblock"><p>Output logic entity description. </p>
+<p>Entity is responsible for implementig the output logic circuit. It compares the input counter time with the user specified time and sets the system output accordingly. The output is a single bit indicating the match between the counter time and user time. The entity has the following ports: <code>clk_i</code> is the clock input, used to synchronize the circuit. <code>rst_i</code> is the reset input, which resets the time signals when asserted. <code>value_i</code> is the input signal representing a value to be decoded. <code>counter_time_i</code> is the input signal representing the counter time. <code>user_time_i</code> is the input signal representing the user-specified time. <code>system_o</code> is the output signal set from the user for the desired timestamp. <code>comparator_o</code> is the output signal indicating the match between counter and user time. </p>
 </div><h2 class="groupheader">Member Data Documentation</h2>
 <a id="ae8d3e5458b0e3cd523d6461463e36fe8" name="ae8d3e5458b0e3cd523d6461463e36fe8"></a>
 <h2 class="memtitle"><span class="permalink"><a href="#ae8d3e5458b0e3cd523d6461463e36fe8">&#9670;&#160;</a></span>clk_i</h2>
@@ -132,6 +143,22 @@ Ports</h2></td></tr>
 </div><div class="memdoc">
 
 <p>Clock signal input. </p>
+
+</div>
+</div>
+<a id="a221bde0c9ce5ad6400b7d7c0b3e76baf" name="a221bde0c9ce5ad6400b7d7c0b3e76baf"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a221bde0c9ce5ad6400b7d7c0b3e76baf">&#9670;&#160;</a></span>comparator_o</h2>
+
+<div class="memitem">
+<div class="memproto">
+      <table class="memname">
+        <tr>
+          <td class="memname"><a class="el" href="#a221bde0c9ce5ad6400b7d7c0b3e76baf">comparator_o</a> <b><span class="keywordflow">out</span><span class="vhdlchar"> </span></b> <b><span class="keywordtype">std_logic</span><span class="vhdlchar"> </span></b> </td>
+        </tr>
+      </table>
+</div><div class="memdoc">
+
+<p>Output signal from comparator. </p>
 
 </div>
 </div>
