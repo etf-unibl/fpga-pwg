@@ -39,33 +39,33 @@ architecture arch of pwg_tb is
 
 	type test_array_t is array(0 to 4) of std_logic_vector(31 downto 0);
     signal nano_timestamps_rise : test_array_t := (
-        std_logic_vector(to_unsigned(1500, writedata'length)),
-        std_logic_vector(to_unsigned(2500, writedata'length)),
         std_logic_vector(to_unsigned(3500, writedata'length)),
         std_logic_vector(to_unsigned(4500, writedata'length)),
-        std_logic_vector(to_unsigned(5500, writedata'length))
+        std_logic_vector(to_unsigned(5500, writedata'length)),
+        std_logic_vector(to_unsigned(6500, writedata'length)),
+        std_logic_vector(to_unsigned(7500, writedata'length))
     );
 	signal nano_timestamps_fall : test_array_t := (
-        std_logic_vector(to_unsigned(2000, writedata'length)),
-        std_logic_vector(to_unsigned(3000, writedata'length)),
         std_logic_vector(to_unsigned(4000, writedata'length)),
         std_logic_vector(to_unsigned(5000, writedata'length)),
-        std_logic_vector(to_unsigned(6000, writedata'length))
+        std_logic_vector(to_unsigned(6000, writedata'length)),
+        std_logic_vector(to_unsigned(7000, writedata'length)),
+        std_logic_vector(to_unsigned(8000, writedata'length))
     );
 
 	signal nano_timestamps_rise_2 : test_array_t := (
-        std_logic_vector(to_unsigned(8000, writedata'length)),
         std_logic_vector(to_unsigned(10000, writedata'length)),
         std_logic_vector(to_unsigned(12000, writedata'length)),
         std_logic_vector(to_unsigned(14000, writedata'length)),
-        std_logic_vector(to_unsigned(16000, writedata'length))
+        std_logic_vector(to_unsigned(16000, writedata'length)),
+        std_logic_vector(to_unsigned(18000, writedata'length))
     );
 	signal nano_timestamps_fall_2 : test_array_t := (
-        std_logic_vector(to_unsigned(9000, writedata'length)),
         std_logic_vector(to_unsigned(11000, writedata'length)),
         std_logic_vector(to_unsigned(13000, writedata'length)),
         std_logic_vector(to_unsigned(15000, writedata'length)),
-        std_logic_vector(to_unsigned(17000, writedata'length))
+        std_logic_vector(to_unsigned(17000, writedata'length)),
+        std_logic_vector(to_unsigned(19000, writedata'length))
     );
 	
 begin
