@@ -152,9 +152,11 @@ begin
 		for i in 0 to 4 loop
 			wait until sys_output = '1';
 			info("System output " & integer'image(i+1) & ". rising edge");
+			info("Current measured timestamp " & integer'image(timer));
 			check(timer = to_integer(unsigned(nano_timestamps_rise(i))), "Checking if output changed at the correct timestamp");
 			wait until sys_output = '0';
 			info("System output " & integer'image(i+1) & ". falling edge");
+			info("Current measured timestamp " & integer'image(timer));
 			check(timer = to_integer(unsigned(nano_timestamps_fall(i))), "Checking if output changed at the correct timestamp");
 		end loop;
 		
