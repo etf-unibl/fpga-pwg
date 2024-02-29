@@ -88,8 +88,8 @@ $(function() {
 <table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="Processes" name="Processes"></a>
 Processes</h2></td></tr>
- <tr class="memitem:afc7ab1aba21f4f83eee0bf8f00931ed9" id="r_afc7ab1aba21f4f83eee0bf8f00931ed9"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#afc7ab1aba21f4f83eee0bf8f00931ed9">PROCESS_5</a>&#160;</td><td class="memItemRight" valign="bottom"><b> ( <b><b><a class="el" href="classtime__counter.html#ae8d3e5458b0e3cd523d6461463e36fe8">clk_i</a></b> <span class="vhdlchar"> </span></b> , <b><b><a class="el" href="classtime__counter.html#ab86c7a8eec3a8327e506892977f85708">rst_i</a></b> <span class="vhdlchar"> </span></b> , <b><b><a class="el" href="classtime__counter.html#a2487d3b474d7c14ea728401a5888eaf9">set_i</a></b> <span class="vhdlchar"> </span></b> )</b></td></tr>
-<tr class="memitem:a970eff382358cef564b9aa0cd2eb06cd" id="r_a970eff382358cef564b9aa0cd2eb06cd"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a970eff382358cef564b9aa0cd2eb06cd">PROCESS_6</a>&#160;</td><td class="memItemRight" valign="bottom"><b> ( <b><b><a class="el" href="#a3f07d36a729b95555dd437ffe2233193">unix_time_reg</a></b> <span class="vhdlchar"> </span></b> , <b><b><a class="el" href="#ace675bda1998e040b94a96c02e72b0b4">nano_time_reg</a></b> <span class="vhdlchar"> </span></b> )</b></td></tr>
+ <tr class="memitem:aacf44a9a60f1592cdf436fd3ed4f7999" id="r_aacf44a9a60f1592cdf436fd3ed4f7999"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#aacf44a9a60f1592cdf436fd3ed4f7999">PROCESS_6</a>&#160;</td><td class="memItemRight" valign="bottom"><b> ( <b><b><a class="el" href="classtime__counter.html#ae8d3e5458b0e3cd523d6461463e36fe8">clk_i</a></b> <span class="vhdlchar"> </span></b> , <b><b><a class="el" href="classtime__counter.html#ab86c7a8eec3a8327e506892977f85708">rst_i</a></b> <span class="vhdlchar"> </span></b> , <b><b><a class="el" href="classtime__counter.html#a2487d3b474d7c14ea728401a5888eaf9">set_i</a></b> <span class="vhdlchar"> </span></b> )</b></td></tr>
+<tr class="memitem:a90a250efc59f15401cff61f96b826192" id="r_a90a250efc59f15401cff61f96b826192"><td class="memItemLeft" align="right" valign="top"><a class="el" href="#a90a250efc59f15401cff61f96b826192">PROCESS_7</a>&#160;</td><td class="memItemRight" valign="bottom"><b> ( <b><b><a class="el" href="#a3f07d36a729b95555dd437ffe2233193">unix_time_reg</a></b> <span class="vhdlchar"> </span></b> , <b><b><a class="el" href="#ace675bda1998e040b94a96c02e72b0b4">nano_time_reg</a></b> <span class="vhdlchar"> </span></b> )</b></td></tr>
 </table><table class="memberdecls">
 <tr class="heading"><td colspan="2"><h2 class="groupheader"><a id="Signals" name="Signals"></a>
 Signals</h2></td></tr>
@@ -102,14 +102,14 @@ Signals</h2></td></tr>
 <div class="textblock"><p>Architecture definition of the time counter. </p>
 <p>Architecture implemented using methodology of regular structured sequential circuits with two registers for unix time and nanoseconds time. Unix time counter increments when nanoseconds coutner counts to 10^9 (1 second). Nanoseconds counter then resets. Asserting rst_i signal resets all counters to zeros. Asserting set_i signal sets value of unix time register to the time_i input value. </p>
 </div><h2 class="groupheader">Member Function/Procedure/Process Documentation</h2>
-<a id="afc7ab1aba21f4f83eee0bf8f00931ed9" name="afc7ab1aba21f4f83eee0bf8f00931ed9"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#afc7ab1aba21f4f83eee0bf8f00931ed9">&#9670;&#160;</a></span>PROCESS_5()</h2>
+<a id="aacf44a9a60f1592cdf436fd3ed4f7999" name="aacf44a9a60f1592cdf436fd3ed4f7999"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#aacf44a9a60f1592cdf436fd3ed4f7999">&#9670;&#160;</a></span>PROCESS_6()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"> <b><span class="vhdlchar"> </span></b> PROCESS_5</td>
+          <td class="memname"> <b><span class="vhdlchar"> </span></b> PROCESS_6</td>
           <td>(</td>
           <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><b><b><a class="el" href="classtime__counter.html#ae8d3e5458b0e3cd523d6461463e36fe8">clk_i</a></b> <span class="vhdlchar"> </span></b> <em></em> , </span></td>
         </tr>
@@ -128,14 +128,14 @@ Signals</h2></td></tr>
 
 </div>
 </div>
-<a id="a970eff382358cef564b9aa0cd2eb06cd" name="a970eff382358cef564b9aa0cd2eb06cd"></a>
-<h2 class="memtitle"><span class="permalink"><a href="#a970eff382358cef564b9aa0cd2eb06cd">&#9670;&#160;</a></span>PROCESS_6()</h2>
+<a id="a90a250efc59f15401cff61f96b826192" name="a90a250efc59f15401cff61f96b826192"></a>
+<h2 class="memtitle"><span class="permalink"><a href="#a90a250efc59f15401cff61f96b826192">&#9670;&#160;</a></span>PROCESS_7()</h2>
 
 <div class="memitem">
 <div class="memproto">
       <table class="memname">
         <tr>
-          <td class="memname"> <b><span class="vhdlchar"> </span></b> PROCESS_6</td>
+          <td class="memname"> <b><span class="vhdlchar"> </span></b> PROCESS_7</td>
           <td>(</td>
           <td class="paramtype"></td>          <td class="paramname"><span class="paramname"><b><b><a class="el" href="#a3f07d36a729b95555dd437ffe2233193">unix_time_reg</a></b> <span class="vhdlchar"> </span></b> <em></em> , </span></td>
         </tr>
