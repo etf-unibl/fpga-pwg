@@ -101,6 +101,7 @@ begin
 		--Clear status register
 		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(1, address'length)), std_logic_vector(to_unsigned(0, writedata'length)));
 		wait_until_idle(net, avmm_bus);
+
 		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(3, address'length)), std_logic_vector(to_unsigned(150, writedata'length)));
 		wait_until_idle(net, avmm_bus);
 		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(4, address'length)), std_logic_vector(to_unsigned(150, writedata'length)));
@@ -110,6 +111,10 @@ begin
 
 		check_bus(net, avmm_bus, std_logic_vector(to_unsigned(1, address'length)), std_logic_vector(to_unsigned(1, readdata'length)), 
 		"Checking if SYS_ERR flag is set after bad transaction");
+
+		--Clear status register
+		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(1, address'length)), std_logic_vector(to_unsigned(0, writedata'length)));
+		wait_until_idle(net, avmm_bus);
 
 		for i in 0 to 6 loop
 			write_bus(net, avmm_bus, std_logic_vector(to_unsigned(5, address'length)), std_logic_vector(to_unsigned(1500, writedata'length)));

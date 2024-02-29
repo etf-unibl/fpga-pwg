@@ -266,9 +266,11 @@ begin
   interrupt_timestamp_2       <= reg_file(1)(4);
 
   -- Interrupt_process
-  process(interrupt_enable, interrupt_buffer_full, interrupt_buffer_empty, interrupt_system_time_error, interrupt_timestamp_1, interrupt_timestamp_2)
+  process(interrupt_enable, interrupt_buffer_full, interrupt_buffer_empty,
+          interrupt_system_time_error, interrupt_timestamp_1, interrupt_timestamp_2)
   begin
-    interrupt <= interrupt_enable and (interrupt_buffer_full  or interrupt_buffer_empty  or interrupt_system_time_error  or interrupt_timestamp_1  or interrupt_timestamp_2);
+    interrupt <= interrupt_enable and (interrupt_buffer_full  or interrupt_buffer_empty  or
+    interrupt_system_time_error  or interrupt_timestamp_1  or interrupt_timestamp_2);
   end process;
 
   address_index <= to_integer(unsigned(av_address_i));
