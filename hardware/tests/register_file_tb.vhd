@@ -101,6 +101,10 @@ begin
 		
 		wait for T;
 		
+		--Clear status register
+		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(1, address'length)), std_logic_vector(to_unsigned(0, writedata'length)));
+		wait_until_idle(net, avmm_bus);
+		
 		info("Reading...");
 		for i in 0 to 2 loop
 			check_bus(net, avmm_bus, std_logic_vector(to_unsigned(i, address'length)), test_array(i), 
