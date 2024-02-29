@@ -75,7 +75,8 @@ entity register_file is
     av_writedata_i   : in  std_logic_vector(31 downto 0); --! Avalon-MM data input
     av_readdata_o    : out std_logic_vector(31 downto 0); --! Avalon-MM data output
     av_waitrequest_o : out std_logic; --! Avalon-MM wait-state signal for response control
-    sys_output_o     : out std_logic  --! System output port
+    sys_output_o     : out std_logic; --! System output port
+    interrupt_o      : out std_logic  --! Interrupt output port
   );
 end register_file;
 
@@ -125,6 +126,15 @@ architecture arch of register_file is
   signal out_log_user_time   : std_logic_vector(63 downto 0) := (others => '0');
   signal out_log_output      : std_logic := '0';
   signal out_log_comparator  : std_logic := '0';
+
+  -- Interrupt signals
+  signal interrupt_buffer_empty      : std_logic := '0';
+  signal interrupt_buffer_full       : std_logic := '0';
+  signal interrupt_system_time_error : std_logic := '0';
+  signal interrupt_timestamp_1       : std_logic := '0';
+  signal interrupt_timestamp_2       : std_logic := '0';
+  signal interrupt_enable            : std_logic := '0';
+  signal interrupt                   : std_logic := '0';
 
   component fifo_buffer is
     generic(
@@ -179,9 +189,6 @@ begin
         reg_file(1)(2) <= '1';
       elsif fifo_buf_empty = '1' then
         reg_file(1)(1) <= '1';
-      else
-        reg_file(1)(1) <= '0';
-        reg_file(1)(2) <= '0';
       end if;
 
       -- Avalon-MM write operaion
@@ -226,7 +233,6 @@ begin
           fifo_write_data(63 downto 32) <= reg_file(4);
           fifo_write_data(31 downto 0)  <= (others => '0');
           fifo_write_en <= '1';
-          reg_file(1)(0) <= '0';
         end if;
       elsif counter_rise = 4 then
         counter_rise <= 0;
@@ -237,7 +243,6 @@ begin
           fifo_write_data(63 downto 32) <= reg_file(6);
           fifo_write_data(31 downto 0)  <= (others => '1');
           fifo_write_en <= '1';
-          reg_file(1)(0) <= '0';
         end if;
       else
         fifo_write_data <= (others => '0');
@@ -253,6 +258,19 @@ begin
     end if;
   end process;
 
+  interrupt_enable            <= reg_file(2)(1);
+  interrupt_system_time_error <= reg_file(1)(0);
+  interrupt_buffer_empty      <= reg_file(1)(1);
+  interrupt_buffer_full       <= reg_file(1)(2);
+  interrupt_timestamp_1       <= reg_file(1)(3);
+  interrupt_timestamp_2       <= reg_file(1)(4);
+
+  -- Interrupt_process
+  process(interrupt_enable, interrupt_buffer_full, interrupt_buffer_empty, interrupt_system_time_error, interrupt_timestamp_1, interrupt_timestamp_2)
+  begin
+    interrupt <= interrupt_enable and (interrupt_buffer_full  or interrupt_buffer_empty  or interrupt_system_time_error  or interrupt_timestamp_1  or interrupt_timestamp_2);
+  end process;
+
   address_index <= to_integer(unsigned(av_address_i));
   global_reset <= reg_file(2)(2) or rst_i;
 
@@ -262,6 +280,7 @@ begin
 
   -- Output logic
   sys_output_o <= out_log_output and reg_file(2)(0);
+  interrupt_o <= interrupt;
 
   fifo : fifo_buffer
   generic map(
