@@ -201,7 +201,7 @@ begin
         elsif (counter_rise = 2 and address_index /= 6) or
         (counter_rise = 0 and address_index = 6) then
           reg_file(1)(4) <= '1';
-          counter_fall <= 0;
+          counter_rise <= 0;
         else
           reg_file(address_index) <= av_writedata_i;
           if address_index = 3 or address_index = 4 then
@@ -236,7 +236,7 @@ begin
       -- Send data to FIFO buffer when both registers are ready
       if counter_fall = 4 then
         counter_fall <= 0;
-        if reg_file(3) < timer_output(63 downto 32) then
+        if (reg_file(3) & reg_file(4)) < timer_output then
           reg_file(1)(0) <= '1';
         else
           fifo_write_data(95 downto 64) <= reg_file(3);
@@ -246,7 +246,7 @@ begin
         end if;
       elsif counter_rise = 4 then
         counter_rise <= 0;
-        if reg_file(5) < timer_output(63 downto 32) then
+        if (reg_file(5) & reg_file(6)) < timer_output then
           reg_file(1)(0) <= '1';
         else
           fifo_write_data(95 downto 64) <= reg_file(5);
