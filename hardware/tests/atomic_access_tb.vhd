@@ -99,7 +99,7 @@ begin
         write_bus(net, avmm_bus, std_logic_vector(to_unsigned(4, address'length)), std_logic_vector(to_unsigned(1337, address'length)));
 		wait_until_idle(net, avmm_bus);
 
-        wait for 2*T;
+        wait for T;
 
         read_bus(net, avmm_bus, std_logic_vector(to_unsigned(1, address'length)), readdata_temp);
         wait_until_idle(net, avmm_bus);
@@ -129,7 +129,7 @@ begin
         write_bus(net, avmm_bus, std_logic_vector(to_unsigned(6, address'length)), std_logic_vector(to_unsigned(1337, address'length)));
 		wait_until_idle(net, avmm_bus);
 
-        wait for 2*T;
+        wait for T;
 
         read_bus(net, avmm_bus, std_logic_vector(to_unsigned(1, address'length)), readdata_temp);
         wait_until_idle(net, avmm_bus);
@@ -159,6 +159,12 @@ begin
         write_bus(net, avmm_bus, std_logic_vector(to_unsigned(6, address'length)), std_logic_vector(to_unsigned(1520, address'length)));
 		wait_until_idle(net, avmm_bus);
 
+		-- Clear status register
+		write_bus(net, avmm_bus, std_logic_vector(to_unsigned(1, address'length)), std_logic_vector(to_unsigned(0, address'length)));
+		wait_until_idle(net, avmm_bus);
+
+		wait for T;
+
         read_bus(net, avmm_bus, std_logic_vector(to_unsigned(1, address'length)), readdata_temp);
         wait_until_idle(net, avmm_bus);
 
@@ -169,7 +175,7 @@ begin
         write_bus(net, avmm_bus, std_logic_vector(to_unsigned(4, address'length)), std_logic_vector(to_unsigned(1520, address'length)));
 		wait_until_idle(net, avmm_bus);
 
-        wait for 2*T;
+        wait for T;
 
         read_bus(net, avmm_bus, std_logic_vector(to_unsigned(1, address'length)), readdata_temp);
         wait_until_idle(net, avmm_bus);
@@ -180,7 +186,7 @@ begin
         write_bus(net, avmm_bus, std_logic_vector(to_unsigned(6, address'length)), std_logic_vector(to_unsigned(1520, address'length)));
 		wait_until_idle(net, avmm_bus);
 
-        wait for 2*T;
+        wait for T;
 
         read_bus(net, avmm_bus, std_logic_vector(to_unsigned(1, address'length)), readdata_temp);
         wait_until_idle(net, avmm_bus);
