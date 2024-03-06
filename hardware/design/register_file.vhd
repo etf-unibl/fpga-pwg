@@ -75,6 +75,7 @@ entity register_file is
     av_writedata_i   : in  std_logic_vector(31 downto 0); --! Avalon-MM data input
     av_readdata_o    : out std_logic_vector(31 downto 0); --! Avalon-MM data output
     av_waitrequest_o : out std_logic; --! Avalon-MM wait-state signal for response control
+    av_response_o    : out std_logic_vector(1 downto 0); --! Avalon-MM response output
     sys_output_o     : out std_logic; --! System output port
     interrupt_o      : out std_logic  --! Interrupt output port
   );
@@ -192,41 +193,52 @@ begin
       end if;
 
       -- Avalon-MM write operaion
-      if av_write_i = '1' and address_index < 7 then
+      if av_write_i = '1' then
         av_waitrequest_o <= '0';
-        if(counter_fall = 2 and address_index /= 4) or
-        (counter_fall = 0 and address_index = 4) then
-          reg_file(1)(3) <= '1';
-          counter_fall <= 0;
-        elsif (counter_rise = 2 and address_index /= 6) or
-        (counter_rise = 0 and address_index = 6) then
-          reg_file(1)(4) <= '1';
-          counter_rise <= 0;
-        else
-          reg_file(address_index) <= av_writedata_i;
-          if address_index = 3 or address_index = 4 then
-            counter_fall <= counter_fall + 1;
-          end if;
-          if address_index = 5 or address_index = 6 then
-            counter_rise <= counter_rise + 1;
-          end if;
-          if address_index = 0 then
-            timer_set_time <= av_writedata_i;
-            timer_set <= '1';
+        if address_index < 7 then
+          av_response_o <= "00";
+          if(counter_fall = 2 and address_index /= 4) or
+          (counter_fall = 0 and address_index = 4) then
+            reg_file(1)(3) <= '1';
+            counter_fall <= 0;
+          elsif (counter_rise = 2 and address_index /= 6) or
+          (counter_rise = 0 and address_index = 6) then
+            reg_file(1)(4) <= '1';
+            counter_rise <= 0;
           else
-            timer_set_time <= (others => '0');
-            timer_set <= '0';
+            reg_file(address_index) <= av_writedata_i;
+            if address_index = 3 or address_index = 4 then
+              counter_fall <= counter_fall + 1;
+            end if;
+            if address_index = 5 or address_index = 6 then
+              counter_rise <= counter_rise + 1;
+            end if;
+            if address_index = 0 then
+              timer_set_time <= av_writedata_i;
+              timer_set <= '1';
+            else
+              timer_set_time <= (others => '0');
+              timer_set <= '0';
+            end if;
           end if;
+        else
+          av_response_o <= "11";
         end if;
 
       -- Avalon-MM read operation
-      elsif av_read_i = '1' and address_index < 3 then
-        if address_index = 0 then
-          av_readdata_o <= timer_output(63 downto 32);
-        else
-          av_readdata_o <= reg_file(address_index);
-        end if;
+      elsif av_read_i = '1' then
         av_waitrequest_o <= '0';
+        if address_index < 3 then
+          av_response_o <= "00";
+          if address_index = 0 then
+            av_readdata_o <= timer_output(63 downto 32);
+          else
+            av_readdata_o <= reg_file(address_index);
+          end if;
+        else
+          av_response_o <= "11";
+        end if;
+
       else
         av_waitrequest_o <= '1';
         timer_set_time <= (others => '0');

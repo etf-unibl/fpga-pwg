@@ -87,6 +87,8 @@ set_output_delay -clock clk_virt -max 0.550 [get_ports {sys_output_o}]
 set_output_delay -clock clk_virt -min 0.350 [get_ports {sys_output_o}]
 set_output_delay -clock clk_virt -max 0.550 [get_ports {av_waitrequest_o}]
 set_output_delay -clock clk_virt -min 0.350 [get_ports {av_waitrequest_o}]
+set_output_delay -clock clk_virt -max 0.550 [get_ports {av_response_o[*]}]
+set_output_delay -clock clk_virt -min 0.350 [get_ports {av_response_o[*]}]
 
 
 #**************************************************************
