@@ -194,8 +194,8 @@ begin
 
       -- Avalon-MM write operaion
       if av_write_i = '1' then
+        av_waitrequest_o <= '0';
         if address_index < 7 then
-          av_waitrequest_o <= '0';
           av_response_o <= "00";
           if(counter_fall = 2 and address_index /= 4) or
           (counter_fall = 0 and address_index = 4) then
@@ -227,6 +227,7 @@ begin
 
       -- Avalon-MM read operation
       elsif av_read_i = '1' then
+        av_waitrequest_o <= '0';
         if address_index < 3 then
           av_response_o <= "00";
           if address_index = 0 then
@@ -234,7 +235,6 @@ begin
           else
             av_readdata_o <= reg_file(address_index);
           end if;
-          av_waitrequest_o <= '0';
         else
           av_response_o <= "11";
         end if;
@@ -243,7 +243,6 @@ begin
         av_waitrequest_o <= '1';
         timer_set_time <= (others => '0');
         timer_set <= '0';
-        av_response_o <= "00";
       end if;
 
       -- Send data to FIFO buffer when both registers are ready
